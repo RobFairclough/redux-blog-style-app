@@ -1,11 +1,11 @@
 import React from "react";
+import ArticleLink from "./ArticleLink";
 
 const Articles = ({ articles }) => {
-    console.log(articles, "prop");
     return (
         <ul>
             {articles.map((article, i) => (
-                <li key={i}>{article.title}</li>
+                <ArticleLink key={i} article={article} />
             ))}
         </ul>
     );

@@ -9,6 +9,8 @@ export const selectTopic = topic => ({
 
 export const REQUEST_ARTICLES = "REQUEST_ARTICLES";
 export const RECEIVE_ARTICLES = "RECEIVE_ARTICLES";
+export const REQUEST_ARTICLE = "REQUEST_ARTICLE";
+export const RECEIVE_ARTICLE = "RECEIVE_ARTICLE";
 
 const requestArticles = topic => ({
     type: REQUEST_ARTICLES,
@@ -19,30 +21,55 @@ const receiveArticles = (topic, articles = []) => ({
     type: RECEIVE_ARTICLES,
     topic,
     articles,
+    receivedAt: Date.now(),
+    fetchedAll: true
+});
+const requestArticle = id => ({
+    type: REQUEST_ARTICLE,
+    id
+});
+
+const receiveArticle = (id, article) => ({
+    type: RECEIVE_ARTICLE,
+    id,
+    article,
     receivedAt: Date.now()
 });
 
-export const fetchArticles = (topic = "all") => async dispatch => {
+export const fetchArticles = (topic = "all") => dispatch => {
     dispatch(requestArticles(topic));
-    // fetch for topic if given otherwise fetch all
-    const path = topic !== "all" ? `topics/${topic}/articles` : "articles";
+    console.log("sending request");
     return axios
-        .get(`https://ncknewsrob.herokuapp.com/api/${path}`)
+        .get(`https://nc-news-api.herokuapp.com/api/articles?limit=1000`)
         .then(({ data: { articles } }) => {
-            console.log(articles, "axios");
-            dispatch(receiveArticles(topic, articles));
+            dispatch(
+                receiveArticles(
+                    topic,
+                    topic === "all"
+                        ? articles
+                        : articles.filter(article => article.topic === topic)
+                )
+            );
         });
 };
 
-const shouldFetchArticles = (state, topic) => {
-    const posts = state.articlesByTopic[topic];
-    console.log(posts, "this is the posts");
-    return !posts ? true : false;
+export const fetchArticleById = id => dispatch => {
+    dispatch(requestArticle(id));
+    console.log("sending single article request");
+    return axios
+        .get(`https://nc-news-api.herokuapp.com/api/articles/${id}`)
+        .then(({ data: { article } }) => {
+            dispatch(receiveArticle(id, article));
+        });
 };
 
-export const fetchArticlesIfNeeded = topic => (dispatch, getState) =>
+const shouldFetchArticles = state => {
+    const fetchedAll = state.articlesByTopic.all;
+    console.log(fetchedAll);
+    return !fetchedAll ? true : false;
+};
+
+export const fetchArticlesIfNeeded = (topic = "all") => (dispatch, getState) =>
     shouldFetchArticles(getState(), topic)
         ? dispatch(fetchArticles(topic))
         : Promise.resolve();
-
-// could add caching / fetch articles if needed here

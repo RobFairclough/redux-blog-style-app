@@ -1,7 +1,13 @@
 import { combineReducers } from "redux";
-import { SELECT_TOPIC, REQUEST_ARTICLES, RECEIVE_ARTICLES } from "./actions";
+import {
+    SELECT_TOPIC,
+    REQUEST_ARTICLES,
+    RECEIVE_ARTICLES,
+    RECEIVE_ARTICLE,
+    REQUEST_ARTICLE
+} from "./actions";
 
-const selectedTopic = (state = "coding", action) =>
+const selectedTopic = (state = "all", action) =>
     action.type === SELECT_TOPIC ? action.topic : state;
 
 const articles = (state = { isFetching: false, items: [] }, action) => {
@@ -13,7 +19,8 @@ const articles = (state = { isFetching: false, items: [] }, action) => {
                 ...state,
                 isFetching: false,
                 items: action.articles,
-                lastUpdated: action.receivedAt
+                lastUpdated: action.receivedAt,
+                fetchedAll: action.fetchedAll
             };
         default:
             return state;
@@ -28,11 +35,21 @@ const articlesByTopic = (state = {}, action) => {
                 ...state,
                 [action.topic]: articles(state[action.topic], action)
             };
+        case RECEIVE_ARTICLE:
+            console.log("ACTION", action);
+            const { items } = state.all || { items: [] };
+            return {
+                ...state,
+                all: { items: [...items, action.article] }
+            };
         default:
             return state;
     }
 };
 
-const rootReducer = combineReducers({ articlesByTopic, selectedTopic });
+const rootReducer = combineReducers({
+    articlesByTopic,
+    selectedTopic
+});
 
 export default rootReducer;

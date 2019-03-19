@@ -7,8 +7,7 @@ import Articles from "./components/Articles";
 
 class App extends Component {
     componentDidMount() {
-        const { dispatch, selectedTopic } = this.props;
-        dispatch(fetchArticlesIfNeeded(selectedTopic));
+        this.props.dispatch(fetchArticlesIfNeeded());
     }
     componentDidUpdate(prevProps) {
         const { dispatch, selectedTopic } = this.props;
@@ -20,7 +19,7 @@ class App extends Component {
     handleChange = newTopic => {
         const { dispatch } = this.props;
         dispatch(selectTopic(newTopic));
-        dispatch(fetchArticlesIfNeeded(newTopic));
+        // dispatch(fetchArticlesIfNeeded(newTopic));
     };
 
     handleRefreshClick = e => {
@@ -31,7 +30,11 @@ class App extends Component {
 
     render() {
         const { selectedTopic, articles, isFetching, lastUpdated } = this.props;
-        const topics = ["football", "cooking", "coding"];
+        const topics = ["all", "football", "cooking", "coding"];
+        const filteredArticles =
+            selectedTopic === "all"
+                ? articles
+                : articles.filter(article => article.topic === selectedTopic);
         return (
             <div className="App">
                 <Picker
@@ -55,7 +58,7 @@ class App extends Component {
                 {isFetching && !articles.length && <h2>Loading...</h2>}
                 {!isFetching && !articles.length && <h2>Empty...</h2>}
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                    <Articles articles={articles} />
+                    <Articles articles={filteredArticles} />
                 </div>
             </div>
         );
@@ -64,9 +67,11 @@ class App extends Component {
 
 const mapStateToProps = state => {
     const { selectedTopic, articlesByTopic } = state;
-    const { isFetching, lastUpdated, items: articles } = articlesByTopic[
-        selectedTopic
-    ] || { isFetching: true, items: [] };
+    const {
+        isFetching,
+        lastUpdated,
+        items: articles
+    } = articlesByTopic.all || { isFetching: true, items: [] };
 
     return { selectedTopic, articles, isFetching, lastUpdated };
 };
