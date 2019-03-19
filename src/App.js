@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { fetchArticles, selectTopic } from "./actions";
+import { fetchArticlesIfNeeded, selectTopic, fetchArticles } from "./actions";
 import { connect } from "react-redux";
 import Picker from "./components/Picker";
 import Articles from "./components/Articles";
@@ -8,19 +8,19 @@ import Articles from "./components/Articles";
 class App extends Component {
     componentDidMount() {
         const { dispatch, selectedTopic } = this.props;
-        dispatch(fetchArticles(selectedTopic));
+        dispatch(fetchArticlesIfNeeded(selectedTopic));
     }
     componentDidUpdate(prevProps) {
         const { dispatch, selectedTopic } = this.props;
         if (selectedTopic !== prevProps.selectedTopic) {
-            dispatch(fetchArticles(selectedTopic));
+            dispatch(fetchArticlesIfNeeded(selectedTopic));
         }
     }
 
     handleChange = newTopic => {
         const { dispatch } = this.props;
         dispatch(selectTopic(newTopic));
-        dispatch(fetchArticles(newTopic));
+        dispatch(fetchArticlesIfNeeded(newTopic));
     };
 
     handleRefreshClick = e => {

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { createStore, applyMiddleware } from "redux";
-import { selectTopic, fetchArticles } from "./actions";
+import { selectTopic, fetchArticlesIfNeeded } from "./actions";
 import rootReducer from "./reducers";
 import "./index.css";
 import Root from "./containers/Root";
@@ -16,6 +16,8 @@ const store = createStore(
 );
 
 store.dispatch(selectTopic("all"));
-store.dispatch(fetchArticles("all")).then(() => console.log(store.getState()));
+store
+    .dispatch(fetchArticlesIfNeeded("all"))
+    .then(() => console.log(store.getState()));
 
 ReactDOM.render(<Root />, document.getElementById("root"));
