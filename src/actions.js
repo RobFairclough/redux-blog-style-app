@@ -27,16 +27,14 @@ export const fetchArticles = (topic = "all") => async dispatch => {
     // fetch for topic if given otherwise fetch all
     const path = topic !== "all" ? `topics/${topic}/articles` : "articles";
     return axios
-        .get(`https://ncknewsrob.herokuapp.com/api/${path}`)
+        .get(`https://ncknewsrob.herokuapp.com/api/${path}?limit=100`)
         .then(({ data: { articles } }) => {
-            console.log(articles, "axios");
             dispatch(receiveArticles(topic, articles));
         });
 };
 
 const shouldFetchArticles = (state, topic) => {
     const posts = state.articlesByTopic[topic];
-    console.log(posts, "this is the posts");
     return !posts ? true : false;
 };
 

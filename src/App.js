@@ -30,13 +30,14 @@ class App extends Component {
     };
 
     render() {
-        const { selectedTopic, articles, isFetching, lastUpdated } = this.props;
-        const topics = ["football", "cooking", "coding"];
+        const { selectedTopic, topics, isFetching, lastUpdated } = this.props;
+        console.log(topics, "topics");
+        const options = ["all", "football", "cooking", "coding"];
         return (
             <div className="App">
                 <Picker
                     value={selectedTopic}
-                    options={topics}
+                    options={options}
                     onChange={this.handleChange}
                 />
                 <p>
@@ -52,11 +53,11 @@ class App extends Component {
                         </button>
                     )}
                 </p>
-                {isFetching && !articles.length && <h2>Loading...</h2>}
+                {/* {isFetching && !articles.length && <h2>Loading...</h2>}
                 {!isFetching && !articles.length && <h2>Empty...</h2>}
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                     <Articles articles={articles} />
-                </div>
+                </div> */}
             </div>
         );
     }
@@ -64,11 +65,13 @@ class App extends Component {
 
 const mapStateToProps = state => {
     const { selectedTopic, articlesByTopic } = state;
-    const { isFetching, lastUpdated, items: articles } = articlesByTopic[
-        selectedTopic
-    ] || { isFetching: true, items: [] };
-
-    return { selectedTopic, articles, isFetching, lastUpdated };
+    const { isFetching, lastUpdated } = articlesByTopic[selectedTopic] || {
+        isFetching: true,
+        items: []
+    };
+    const { topics } = articlesByTopic;
+    console.log(topics, "articles by topic topics");
+    return { selectedTopic, topics, isFetching, lastUpdated };
 };
 
 export default connect(mapStateToProps)(App);
