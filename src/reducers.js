@@ -3,7 +3,9 @@ import {
     SELECT_TOPIC,
     REQUEST_ARTICLES,
     RECEIVE_ARTICLES,
-    RECEIVE_ARTICLE
+    RECEIVE_ARTICLE,
+    REQUEST_COMMENTS,
+    RECEIVE_COMMENTS
 } from "./actions";
 
 const selectedTopic = (state = "all", action) =>
@@ -45,9 +47,23 @@ const articlesByTopic = (state = {}, action) => {
     }
 };
 
+const comments = (state = {}, action) => {
+    switch (action.type) {
+        case REQUEST_COMMENTS:
+        case RECEIVE_COMMENTS:
+            return {
+                ...state,
+                [action.id]: action.comments
+            };
+        default:
+            return state;
+    }
+};
+
 const rootReducer = combineReducers({
     articlesByTopic,
-    selectedTopic
+    selectedTopic,
+    comments
 });
 
 export default rootReducer;
