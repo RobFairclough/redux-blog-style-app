@@ -41,14 +41,7 @@ export const fetchArticles = (topic = "all") => dispatch => {
     return axios
         .get(`https://nc-news-api.herokuapp.com/api/articles?limit=1000`)
         .then(({ data: { articles } }) => {
-            dispatch(
-                receiveArticles(
-                    topic,
-                    topic === "all"
-                        ? articles
-                        : articles.filter(article => article.topic === topic)
-                )
-            );
+            dispatch(receiveArticles(topic, articles));
         });
 };
 

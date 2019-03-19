@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchArticlesIfNeeded, fetchArticleById } from "../actions";
+import { fetchArticleById } from "../actions";
 const Article = ({ articles, dispatch, match }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);

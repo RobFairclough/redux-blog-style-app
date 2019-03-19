@@ -19,7 +19,6 @@ class App extends Component {
     handleChange = newTopic => {
         const { dispatch } = this.props;
         dispatch(selectTopic(newTopic));
-        // dispatch(fetchArticlesIfNeeded(newTopic));
     };
 
     handleRefreshClick = e => {
@@ -34,7 +33,9 @@ class App extends Component {
         const filteredArticles =
             selectedTopic === "all"
                 ? articles
-                : articles.filter(article => article.topic === selectedTopic);
+                : articles.filter(
+                      article => article.belongs_to === selectedTopic
+                  );
         return (
             <div className="App">
                 <Picker

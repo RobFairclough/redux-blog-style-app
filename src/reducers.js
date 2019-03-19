@@ -3,8 +3,7 @@ import {
     SELECT_TOPIC,
     REQUEST_ARTICLES,
     RECEIVE_ARTICLES,
-    RECEIVE_ARTICLE,
-    REQUEST_ARTICLE
+    RECEIVE_ARTICLE
 } from "./actions";
 
 const selectedTopic = (state = "all", action) =>
