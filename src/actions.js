@@ -15,22 +15,23 @@ const requestArticles = topic => ({
     topic
 });
 
-const receiveArticles = (topic, json) => ({
+const receiveArticles = (topic, articles = []) => ({
     type: RECEIVE_ARTICLES,
     topic,
-    articles: json.data ? json.data.children.map(child => child.data) : [],
+    articles,
     receivedAt: Date.now()
 });
 
 export const fetchArticles = (topic = "all") => async dispatch => {
     dispatch(requestArticles(topic));
     // fetch for topic if given otherwise fetch all
-    const path = topic ? `topics/${topic}/articles` : "articles";
-    const articles = await axios.get(
-        `https://nc-news-api.herokuapp.com/api/${path}`
-    );
-    console.log(articles);
-    dispatch(receiveArticles(topic, articles));
+    const path = topic !== "all" ? `topics/${topic}/articles` : "articles";
+    return axios
+        .get(`https://nc-news-api.herokuapp.com/api/${path}`)
+        .then(({ data: { articles } }) => {
+            console.log(articles, "axios");
+            dispatch(receiveArticles(topic, articles));
+        });
 };
 
 // could add caching / fetch articles if needed here
