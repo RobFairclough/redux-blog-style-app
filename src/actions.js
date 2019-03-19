@@ -11,6 +11,8 @@ export const REQUEST_ARTICLES = "REQUEST_ARTICLES";
 export const RECEIVE_ARTICLES = "RECEIVE_ARTICLES";
 export const REQUEST_ARTICLE = "REQUEST_ARTICLE";
 export const RECEIVE_ARTICLE = "RECEIVE_ARTICLE";
+export const REQUEST_COMMENTS = "REQUEST_COMMENTS";
+export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 
 const requestArticles = topic => ({
     type: REQUEST_ARTICLES,
@@ -24,6 +26,18 @@ const receiveArticles = (topic, articles = []) => ({
     receivedAt: Date.now(),
     fetchedAll: true
 });
+const requestComments = topic => ({
+    type: REQUEST_COMMENTS,
+    topic
+});
+
+const receiveComments = (topic, comments = []) => ({
+    type: RECEIVE_COMMENTS,
+    topic,
+    comments,
+    receivedAt: Date.now()
+});
+
 const requestArticle = id => ({
     type: REQUEST_ARTICLE,
     id
@@ -51,6 +65,15 @@ export const fetchArticleById = id => dispatch => {
         .get(`https://nc-news-api.herokuapp.com/api/articles/${id}`)
         .then(({ data: { article } }) => {
             dispatch(receiveArticle(id, article));
+        });
+};
+
+export const fetchComments = id => dispatch => {
+    dispatch(requestComments(id));
+    return axios
+        .get(`https://nc-news-api.herokuapp.com/api/articles/${id}/comments`)
+        .then(({ data: { comments } }) => {
+            dispatch(receiveComments(id, comments));
         });
 };
 
