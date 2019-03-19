@@ -38,7 +38,6 @@ const receiveArticle = (id, article) => ({
 
 export const fetchArticles = (topic = "all") => dispatch => {
     dispatch(requestArticles(topic));
-    console.log("sending request");
     return axios
         .get(`https://nc-news-api.herokuapp.com/api/articles?limit=1000`)
         .then(({ data: { articles } }) => {
@@ -55,7 +54,6 @@ export const fetchArticles = (topic = "all") => dispatch => {
 
 export const fetchArticleById = id => dispatch => {
     dispatch(requestArticle(id));
-    console.log("sending single article request");
     return axios
         .get(`https://nc-news-api.herokuapp.com/api/articles/${id}`)
         .then(({ data: { article } }) => {
@@ -65,7 +63,6 @@ export const fetchArticleById = id => dispatch => {
 
 const shouldFetchArticles = state => {
     const fetchedAll = state.articlesByTopic.all;
-    console.log(fetchedAll);
     return !fetchedAll ? true : false;
 };
 

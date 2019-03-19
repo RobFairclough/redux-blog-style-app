@@ -14,9 +14,4 @@ const store = createStore(
     applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
-// store.dispatch(selectTopic("all"));
-// store
-//     .dispatch(fetchArticlesIfNeeded("all"))
-//     .then(() => console.log(store.getState()));
-
 ReactDOM.render(<Root />, document.getElementById("root"));

@@ -36,7 +36,6 @@ const articlesByTopic = (state = {}, action) => {
                 [action.topic]: articles(state[action.topic], action)
             };
         case RECEIVE_ARTICLE:
-            console.log("ACTION", action);
             const { items } = state.all || { items: [] };
             return {
                 ...state,
