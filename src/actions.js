@@ -15,6 +15,8 @@ export const REQUEST_COMMENTS = "REQUEST_COMMENTS";
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 export const SEND_COMMENT = "SEND_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
+export const SEND_ARTICLE_VOTE = "SEND_ARTICLE_VOTE";
+export const SEND_COMMENT_VOTE = "SEND_COMMENT_VOTE";
 
 const requestArticles = topic => ({
     type: REQUEST_ARTICLES,
@@ -64,6 +66,19 @@ const sendComment = (comment, comments, id) => ({
     comments,
     comment
 });
+
+const sendCommentVote = (id, commentId, num) => ({
+    type: SEND_COMMENT_VOTE,
+    id,
+    commentId,
+    num
+});
+const sendArticleVote = (id, num) => ({
+    type: SEND_ARTICLE_VOTE,
+    id,
+    num
+});
+
 export const fetchArticles = (topic = "all") => dispatch => {
     dispatch(requestArticles(topic));
     return axios
@@ -113,4 +128,13 @@ export const postComment = (id, comment) => (dispatch, getState) => {
 
 export const deleteComment = (articleId, commentId) => (dispatch, getState) => {
     dispatch(removeComment(articleId, commentId, getState().comments));
+};
+
+export const postCommentVote = (id, articleId, num) => dispatch => {
+    console.log("post comment vote action");
+    // dispatch(sendCommentVote(articleId, id, num));
+};
+export const postArticleVote = (id, num) => dispatch => {
+    console.log("post article vote action");
+    dispatch(sendArticleVote(id, num));
 };

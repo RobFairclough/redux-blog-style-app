@@ -2,23 +2,23 @@ import React, { useState } from "react";
 import axios from "axios";
 import { postComment } from "../actions";
 import { connect } from "react-redux";
+import { API_URL } from "../utils";
 const AddComment = ({ articleId, dispatch }) => {
     const [comment, setComment] = useState("");
     const [sent, send] = useState(false);
-    const sendComment = e => {
+    const sendComment = async e => {
         e.preventDefault();
         if (comment) {
-            axios
-                .post(
-                    `https://nc-news-api.herokuapp.com/api/articles/${articleId}/comments`,
-                    { comment }
-                )
-                .then(({ data: { comment } }) =>
-                    dispatch(postComment(articleId, comment))
-                );
+            const { data } = await axios.post(
+                `${API_URL}/articles/${articleId}/comments`,
+                {
+                    comment
+                }
+            );
+            dispatch(postComment(articleId, data.comment));
+            setComment("");
             send(true);
             setTimeout(() => send(false), 3000);
-            setComment("");
         }
     };
     return (
