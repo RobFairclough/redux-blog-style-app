@@ -6,6 +6,7 @@ import Comment from "./Comment";
 import Vote from "./Vote";
 import AddComment from "./AddComment";
 import axios from "axios";
+import { API_URL } from "../utils";
 const Article = ({ articles, dispatch, match, comments, isFetching }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
@@ -17,13 +18,9 @@ const Article = ({ articles, dispatch, match, comments, isFetching }) => {
     }, [articles.join(",")]);
 
     const handleDeleteComment = commentId => {
-        axios
-            .delete(
-                `https://nc-news-api.herokuapp.com/api/comments/${commentId}`
-            )
-            .then(() => {
-                dispatch(deleteComment(id, commentId));
-            });
+        axios.delete(`${API_URL}/comments/${commentId}`).then(() => {
+            dispatch(deleteComment(id, commentId));
+        });
     };
     return article ? (
         <>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from "./utils";
 
 export const SELECT_TOPIC = "SELECT_TOPIC";
 
@@ -82,7 +83,7 @@ const sendArticleVote = (id, num) => ({
 export const fetchArticles = (topic = "all") => dispatch => {
     dispatch(requestArticles(topic));
     return axios
-        .get(`https://nc-news-api.herokuapp.com/api/articles?limit=1000`)
+        .get(`${API_URL}/articles?limit=1000`)
         .then(({ data: { articles } }) => {
             dispatch(receiveArticles(topic, articles));
         });
@@ -91,13 +92,9 @@ export const fetchArticles = (topic = "all") => dispatch => {
 export const fetchArticleById = id => dispatch => {
     dispatch(requestArticle(id));
     return axios
-        .get(`https://nc-news-api.herokuapp.com/api/articles/${id}`)
+        .get(`${API_URL}/articles/${id}`)
         .then(({ data: { article } }) => {
             dispatch(receiveArticle(id, article));
-        })
-        .catch(e => {
-            console.log(e);
-            dispatch(receiveArticle(id, {}));
         });
 };
 
@@ -114,7 +111,7 @@ export const fetchArticlesIfNeeded = () => (dispatch, getState) =>
 export const fetchComments = id => dispatch => {
     dispatch(requestComments(id));
     return axios
-        .get(`https://nc-news-api.herokuapp.com/api/articles/${id}/comments`)
+        .get(`${API_URL}/articles/${id}/comments`)
         .then(({ data: { comments } }) => {
             dispatch(receiveComments(id, comments));
         });
@@ -131,10 +128,8 @@ export const deleteComment = (articleId, commentId) => (dispatch, getState) => {
 };
 
 export const postCommentVote = (id, articleId, num) => dispatch => {
-    console.log("post comment vote action");
     // dispatch(sendCommentVote(articleId, id, num));
 };
 export const postArticleVote = (id, num) => dispatch => {
-    console.log("post article vote action");
     dispatch(sendArticleVote(id, num));
 };
