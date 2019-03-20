@@ -68,14 +68,13 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-    const { selectedTopic, articlesByTopic } = state;
-    const {
-        isFetching,
-        lastUpdated,
-        items: articles
-    } = articlesByTopic.all || { isFetching: true, items: [] };
+    const { selectedTopic, articles } = state;
+    const { isFetching, lastUpdated, items } = articles || {
+        isFetching: true,
+        items: []
+    };
 
-    return { selectedTopic, articles, isFetching, lastUpdated };
+    return { selectedTopic, articles: items, isFetching, lastUpdated };
 };
 
 export default connect(mapStateToProps)(App);

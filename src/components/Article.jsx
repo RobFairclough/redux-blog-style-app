@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "./article.css";
 import { fetchArticleById, fetchComments } from "../actions";
 import Comment from "./Comment";
+import Vote from "./Vote";
 const Article = ({ articles, dispatch, match, comments }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
@@ -18,6 +19,7 @@ const Article = ({ articles, dispatch, match, comments }) => {
                 <h1>{article.title}</h1>
                 <h2>By {article.author}</h2>
                 <p>{article.body}</p>
+                <Vote votes={article.votes} id={id} type={"articles"} />
             </div>
             {articleComments && (
                 <div className="comments container">
@@ -34,8 +36,8 @@ const Article = ({ articles, dispatch, match, comments }) => {
 };
 
 const mapStateToProps = state => {
-    const { articlesByTopic, comments } = state;
-    const { items: articles } = articlesByTopic.all || { items: [] };
-    return { articles, comments };
+    const { articles, comments } = state;
+    const { items } = articles || { items: [] };
+    return { articles: items, comments };
 };
 export default connect(mapStateToProps)(Article);

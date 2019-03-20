@@ -28,25 +28,6 @@ const articles = (state = { isFetching: false, items: [] }, action) => {
     }
 };
 
-const articlesByTopic = (state = {}, action) => {
-    switch (action.type) {
-        case REQUEST_ARTICLES:
-        case RECEIVE_ARTICLES:
-            return {
-                ...state,
-                [action.topic]: articles(state[action.topic], action)
-            };
-        case RECEIVE_ARTICLE:
-            const { items } = state.all || { items: [] };
-            return {
-                ...state,
-                all: { items: [...items, action.article] }
-            };
-        default:
-            return state;
-    }
-};
-
 const comments = (state = {}, action) => {
     switch (action.type) {
         case REQUEST_COMMENTS:
@@ -61,7 +42,7 @@ const comments = (state = {}, action) => {
 };
 
 const rootReducer = combineReducers({
-    articlesByTopic,
+    articles,
     selectedTopic,
     comments
 });
