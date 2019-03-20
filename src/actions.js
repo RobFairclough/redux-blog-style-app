@@ -78,11 +78,12 @@ export const fetchComments = id => dispatch => {
 };
 
 const shouldFetchArticles = state => {
-    const fetchedAll = state.articlesByTopic.all;
+    const { fetchedAll } = state.articlesByTopic.all || { fetchedAll: false };
+    console.log(fetchedAll, "fetched all?");
     return !fetchedAll ? true : false;
 };
 
-export const fetchArticlesIfNeeded = (topic = "all") => (dispatch, getState) =>
-    shouldFetchArticles(getState(), topic)
-        ? dispatch(fetchArticles(topic))
+export const fetchArticlesIfNeeded = () => (dispatch, getState) =>
+    shouldFetchArticles(getState())
+        ? dispatch(fetchArticles())
         : Promise.resolve();
