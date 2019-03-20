@@ -6,14 +6,14 @@ import Comment from "./Comment";
 import Vote from "./Vote";
 import AddComment from "./AddComment";
 import axios from "axios";
-const Article = ({ articles, dispatch, match, comments }) => {
+const Article = ({ articles, dispatch, match, comments, isFetching }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
     const articleComments = comments[id];
 
     useEffect(() => {
         if (!article) dispatch(fetchArticleById(id));
-        if (!articleComments) dispatch(fetchComments(id));
+        if (article && !articleComments) dispatch(fetchComments(id));
     }, [articles.join(",")]);
 
     const handleDeleteComment = commentId => {
@@ -47,14 +47,14 @@ const Article = ({ articles, dispatch, match, comments }) => {
             )}
         </>
     ) : (
-        // todo: add loading article message
-        <p>Article not found</p>
+        !article && (isFetching ? <p>loading...</p> : <p>Article not found</p>)
+        // todo: add loading article message w/ articlenotfound
     );
 };
 
 const mapStateToProps = state => {
     const { articles, comments } = state;
-    const { items } = articles || { items: [] };
-    return { articles: items, comments };
+    const { items, isFetching } = articles || { items: [], isFetching: false };
+    return { articles: items, comments, isFetching };
 };
 export default connect(mapStateToProps)(Article);

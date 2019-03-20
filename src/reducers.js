@@ -7,7 +7,8 @@ import {
     REQUEST_COMMENTS,
     RECEIVE_COMMENTS,
     SEND_COMMENT,
-    REMOVE_COMMENT
+    REMOVE_COMMENT,
+    REQUEST_ARTICLE
 } from "./actions";
 
 const selectedTopic = (state = "all", action) =>
@@ -25,10 +26,13 @@ const articles = (state = { isFetching: false, items: [] }, action) => {
                 lastUpdated: action.receivedAt,
                 fetchedAll: action.fetchedAll
             };
+        case REQUEST_ARTICLE:
+            return { ...state, isFetching: true };
         case RECEIVE_ARTICLE:
             const { items } = state.articles || { items: [] };
             return {
                 ...state,
+                isFetching: false,
                 items: [...items, action.article]
             };
         default:

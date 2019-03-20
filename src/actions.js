@@ -79,6 +79,10 @@ export const fetchArticleById = id => dispatch => {
         .get(`https://nc-news-api.herokuapp.com/api/articles/${id}`)
         .then(({ data: { article } }) => {
             dispatch(receiveArticle(id, article));
+        })
+        .catch(e => {
+            console.log(e);
+            dispatch(receiveArticle(id, {}));
         });
 };
 
