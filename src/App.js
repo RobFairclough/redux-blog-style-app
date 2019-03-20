@@ -15,10 +15,8 @@ class App extends Component {
             dispatch(fetchArticlesIfNeeded(selectedTopic));
         }
     }
-
     handleChange = newTopic => {
-        const { dispatch } = this.props;
-        dispatch(selectTopic(newTopic));
+        this.props.dispatch(selectTopic(newTopic));
     };
 
     handleRefreshClick = e => {
@@ -58,7 +56,10 @@ class App extends Component {
                 </p>
                 {isFetching && !articles.length && <h2>Loading...</h2>}
                 {!isFetching && !articles.length && <h2>Empty...</h2>}
-                <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+                <div
+                    style={{ opacity: isFetching ? 0.5 : 1 }}
+                    className="container"
+                >
                     <Articles articles={filteredArticles} />
                 </div>
             </div>

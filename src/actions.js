@@ -26,14 +26,14 @@ const receiveArticles = (topic, articles = []) => ({
     receivedAt: Date.now(),
     fetchedAll: true
 });
-const requestComments = topic => ({
+const requestComments = id => ({
     type: REQUEST_COMMENTS,
-    topic
+    id
 });
 
-const receiveComments = (topic, comments = []) => ({
+const receiveComments = (id, comments = []) => ({
     type: RECEIVE_COMMENTS,
-    topic,
+    id,
     comments,
     receivedAt: Date.now()
 });

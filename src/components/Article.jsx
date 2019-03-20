@@ -1,27 +1,41 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchArticleById } from "../actions";
-const Article = ({ articles, dispatch, match }) => {
+import "./article.css";
+import { fetchArticleById, fetchComments } from "../actions";
+import Comment from "./Comment";
+const Article = ({ articles, dispatch, match, comments }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
+    const articleComments = comments[id];
     useEffect(() => {
         if (!article) dispatch(fetchArticleById(id));
+        if (!articleComments) dispatch(fetchComments(id));
     }, [articles.join(",")]);
 
     return article ? (
-        <div>
-            <h1>{article.title}</h1>
-            <h2>By {article.author}</h2>
-            <p>{article.body}</p>
-        </div>
+        <>
+            <div className="article container">
+                <h1>{article.title}</h1>
+                <h2>By {article.author}</h2>
+                <p>{article.body}</p>
+            </div>
+            {articleComments && (
+                <div className="comments container">
+                    {articleComments.map(comment => (
+                        <Comment comment={comment} />
+                    ))}
+                </div>
+            )}
+        </>
     ) : (
+        // todo: add loading article message
         <p>Article not found</p>
     );
 };
 
 const mapStateToProps = state => {
-    const { articlesByTopic } = state;
+    const { articlesByTopic, comments } = state;
     const { items: articles } = articlesByTopic.all || { items: [] };
-    return { articles };
+    return { articles, comments };
 };
 export default connect(mapStateToProps)(Article);
