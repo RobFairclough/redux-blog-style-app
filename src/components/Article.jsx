@@ -18,9 +18,8 @@ const Article = ({ articles, dispatch, match, comments, isFetching }) => {
     }, [articles.join(",")]);
 
     const handleDeleteComment = commentId => {
-        axios.delete(`${API_URL}/comments/${commentId}`).then(() => {
-            dispatch(deleteComment(id, commentId));
-        });
+        axios.delete(`${API_URL}/comments/${commentId}`);
+        dispatch(deleteComment(id, commentId));
     };
     return article ? (
         <>
