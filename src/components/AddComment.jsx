@@ -17,12 +17,13 @@ const AddComment = ({ articleId, dispatch }) => {
                     dispatch(postComment(articleId, comment))
                 );
             send(true);
+            setTimeout(() => send(false), 3000);
             setComment("");
         }
     };
     return (
         <form className="comment-form container" onSubmit={sendComment}>
-            {sent && <p>Comment submitted!</p>}
+            {sent && <p className="submit-text">Comment submitted!</p>}
             <label htmlFor="comment-body">Your comment:</label>
             <input
                 type="text"

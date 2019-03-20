@@ -36,6 +36,9 @@ const Article = ({ articles, dispatch, match, comments, isFetching }) => {
             <AddComment articleId={id} />
             {articleComments && (
                 <div className="comments container">
+                    <button onClick={() => dispatch(fetchComments(id))}>
+                        Refresh comments
+                    </button>
                     {articleComments.map((comment, i) => (
                         <Comment
                             comment={comment}
@@ -47,8 +50,11 @@ const Article = ({ articles, dispatch, match, comments, isFetching }) => {
             )}
         </>
     ) : (
-        !article && (isFetching ? <p>loading...</p> : <p>Article not found</p>)
-        // todo: add loading article message w/ articlenotfound
+        !article && (
+            <p className="err-text">
+                {isFetching ? "loading..." : "Article not found"}
+            </p>
+        )
     );
 };
 

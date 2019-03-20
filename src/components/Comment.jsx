@@ -13,6 +13,7 @@ const Comment = ({ comment, handleDelete }) => {
                 </button>
             )}
             <h5>{comment.created_by}</h5>
+            <p>{new Date(comment.created_at).toDateString()}</p>
             <p>{comment.body}</p>
             <Vote votes={comment.votes} id={comment._id} type={"comments"} />
         </div>

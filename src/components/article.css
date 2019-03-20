@@ -51,3 +51,7 @@
     display: flex;
     align-items: center;
 }
+
+.err-text {
+    text-align: center;
+}
