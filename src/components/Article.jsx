@@ -8,6 +8,7 @@ const Article = ({ articles, dispatch, match, comments }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
     const articleComments = comments[id];
+
     useEffect(() => {
         if (!article) dispatch(fetchArticleById(id));
         if (!articleComments) dispatch(fetchComments(id));
@@ -23,8 +24,8 @@ const Article = ({ articles, dispatch, match, comments }) => {
             </div>
             {articleComments && (
                 <div className="comments container">
-                    {articleComments.map(comment => (
-                        <Comment comment={comment} />
+                    {articleComments.map((comment, i) => (
+                        <Comment comment={comment} key={i} />
                     ))}
                 </div>
             )}

@@ -23,6 +23,12 @@ const articles = (state = { isFetching: false, items: [] }, action) => {
                 lastUpdated: action.receivedAt,
                 fetchedAll: action.fetchedAll
             };
+        case RECEIVE_ARTICLE:
+            const { items } = state.articles || { items: [] };
+            return {
+                ...state,
+                items: [...items, action.article]
+            };
         default:
             return state;
     }
