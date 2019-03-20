@@ -79,7 +79,6 @@ export const fetchComments = id => dispatch => {
 
 const shouldFetchArticles = state => {
     const { fetchedAll } = state.articles || { fetchedAll: false };
-    console.log(fetchedAll, "fetched all?");
     return !fetchedAll ? true : false;
 };
 
