@@ -17,12 +17,13 @@ const AddComment = ({ articleId, dispatch }) => {
                     dispatch(postComment(articleId, comment))
                 );
             send(true);
-            // todo: add comment to article's comment array
+            setComment("");
         }
     };
-    return sent ? null : (
+    return (
         <form className="comment-form container" onSubmit={sendComment}>
-            <label htmlFor="comment-body">Your comment: </label>
+            {sent && <p>Comment submitted!</p>}
+            <label htmlFor="comment-body">Your comment:</label>
             <input
                 type="text"
                 onChange={({ target: { value } }) => setComment(value)}

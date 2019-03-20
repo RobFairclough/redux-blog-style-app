@@ -22,6 +22,14 @@
         "Lucida Sans", Arial, sans-serif;
 }
 
+.comment {
+    width: 90%;
+}
+
+.comment-form {
+    margin: 1em 25%;
+}
+
 .link-text {
     text-decoration: none;
     color: black;

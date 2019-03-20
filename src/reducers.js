@@ -6,7 +6,8 @@ import {
     RECEIVE_ARTICLE,
     REQUEST_COMMENTS,
     RECEIVE_COMMENTS,
-    SEND_COMMENT
+    SEND_COMMENT,
+    REMOVE_COMMENT
 } from "./actions";
 
 const selectedTopic = (state = "all", action) =>
@@ -46,7 +47,14 @@ const comments = (state = {}, action) => {
         case SEND_COMMENT:
             return {
                 ...state,
-                [action.id]: [...action.comments[action.id], action.comment]
+                [action.id]: [action.comment, ...action.comments[action.id]]
+            };
+        case REMOVE_COMMENT:
+            return {
+                ...state,
+                [action.articleId]: state[action.articleId].filter(
+                    comment => comment._id !== action.commentId
+                )
             };
         default:
             return state;

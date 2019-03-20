@@ -14,6 +14,7 @@ export const RECEIVE_ARTICLE = "RECEIVE_ARTICLE";
 export const REQUEST_COMMENTS = "REQUEST_COMMENTS";
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 export const SEND_COMMENT = "SEND_COMMENT";
+export const REMOVE_COMMENT = "REMOVE_COMMENT";
 
 const requestArticles = topic => ({
     type: REQUEST_ARTICLES,
@@ -37,6 +38,12 @@ const receiveComments = (id, comments = []) => ({
     id,
     comments,
     receivedAt: Date.now()
+});
+const removeComment = (articleId, commentId, comments = []) => ({
+    type: REMOVE_COMMENT,
+    articleId,
+    commentId,
+    comments
 });
 
 const requestArticle = id => ({
@@ -98,4 +105,8 @@ export const postComment = (id, comment) => (dispatch, getState) => {
     const state = getState();
     const { comments } = state;
     dispatch(sendComment(comment, comments, id));
+};
+
+export const deleteComment = (articleId, commentId) => (dispatch, getState) => {
+    dispatch(removeComment(articleId, commentId, getState().comments));
 };

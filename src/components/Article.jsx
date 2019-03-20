@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "./article.css";
-import { fetchArticleById, fetchComments } from "../actions";
+import { fetchArticleById, fetchComments, deleteComment } from "../actions";
 import Comment from "./Comment";
 import Vote from "./Vote";
 import AddComment from "./AddComment";
+import axios from "axios";
 const Article = ({ articles, dispatch, match, comments }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
@@ -15,6 +16,15 @@ const Article = ({ articles, dispatch, match, comments }) => {
         if (!articleComments) dispatch(fetchComments(id));
     }, [articles.join(",")]);
 
+    const handleDeleteComment = commentId => {
+        axios
+            .delete(
+                `https://nc-news-api.herokuapp.com/api/comments/${commentId}`
+            )
+            .then(() => {
+                dispatch(deleteComment(id, commentId));
+            });
+    };
     return article ? (
         <>
             <div className="article container">
@@ -27,7 +37,11 @@ const Article = ({ articles, dispatch, match, comments }) => {
             {articleComments && (
                 <div className="comments container">
                     {articleComments.map((comment, i) => (
-                        <Comment comment={comment} key={i} />
+                        <Comment
+                            comment={comment}
+                            handleDelete={handleDeleteComment}
+                            key={i}
+                        />
                     ))}
                 </div>
             )}
