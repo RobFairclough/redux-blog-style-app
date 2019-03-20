@@ -13,6 +13,7 @@ export const REQUEST_ARTICLE = "REQUEST_ARTICLE";
 export const RECEIVE_ARTICLE = "RECEIVE_ARTICLE";
 export const REQUEST_COMMENTS = "REQUEST_COMMENTS";
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
+export const SEND_COMMENT = "SEND_COMMENT";
 
 const requestArticles = topic => ({
     type: REQUEST_ARTICLES,
@@ -50,6 +51,12 @@ const receiveArticle = (id, article) => ({
     receivedAt: Date.now()
 });
 
+const sendComment = (comment, comments, id) => ({
+    type: SEND_COMMENT,
+    id,
+    comments,
+    comment
+});
 export const fetchArticles = (topic = "all") => dispatch => {
     dispatch(requestArticles(topic));
     return axios
@@ -68,15 +75,6 @@ export const fetchArticleById = id => dispatch => {
         });
 };
 
-export const fetchComments = id => dispatch => {
-    dispatch(requestComments(id));
-    return axios
-        .get(`https://nc-news-api.herokuapp.com/api/articles/${id}/comments`)
-        .then(({ data: { comments } }) => {
-            dispatch(receiveComments(id, comments));
-        });
-};
-
 const shouldFetchArticles = state => {
     const { fetchedAll } = state.articles || { fetchedAll: false };
     return !fetchedAll ? true : false;
@@ -86,3 +84,18 @@ export const fetchArticlesIfNeeded = () => (dispatch, getState) =>
     shouldFetchArticles(getState())
         ? dispatch(fetchArticles())
         : Promise.resolve();
+
+export const fetchComments = id => dispatch => {
+    dispatch(requestComments(id));
+    return axios
+        .get(`https://nc-news-api.herokuapp.com/api/articles/${id}/comments`)
+        .then(({ data: { comments } }) => {
+            dispatch(receiveComments(id, comments));
+        });
+};
+
+export const postComment = (id, comment) => (dispatch, getState) => {
+    const state = getState();
+    const { comments } = state;
+    dispatch(sendComment(comment, comments, id));
+};

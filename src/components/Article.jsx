@@ -4,6 +4,7 @@ import "./article.css";
 import { fetchArticleById, fetchComments } from "../actions";
 import Comment from "./Comment";
 import Vote from "./Vote";
+import AddComment from "./AddComment";
 const Article = ({ articles, dispatch, match, comments }) => {
     const { id } = match.params;
     const article = articles.find(article => article._id === id);
@@ -22,6 +23,7 @@ const Article = ({ articles, dispatch, match, comments }) => {
                 <p>{article.body}</p>
                 <Vote votes={article.votes} id={id} type={"articles"} />
             </div>
+            <AddComment articleId={id} />
             {articleComments && (
                 <div className="comments container">
                     {articleComments.map((comment, i) => (

@@ -5,7 +5,8 @@ import {
     RECEIVE_ARTICLES,
     RECEIVE_ARTICLE,
     REQUEST_COMMENTS,
-    RECEIVE_COMMENTS
+    RECEIVE_COMMENTS,
+    SEND_COMMENT
 } from "./actions";
 
 const selectedTopic = (state = "all", action) =>
@@ -41,6 +42,11 @@ const comments = (state = {}, action) => {
             return {
                 ...state,
                 [action.id]: action.comments
+            };
+        case SEND_COMMENT:
+            return {
+                ...state,
+                [action.id]: [...action.comments[action.id], action.comment]
             };
         default:
             return state;
