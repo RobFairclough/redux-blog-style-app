@@ -128,7 +128,7 @@ export const deleteComment = (articleId, commentId) => (dispatch, getState) => {
 };
 
 export const postCommentVote = (id, articleId, num) => dispatch => {
-    // dispatch(sendCommentVote(articleId, id, num));
+    dispatch(sendCommentVote(articleId, id, num));
 };
 export const postArticleVote = (id, num) => dispatch => {
     dispatch(sendArticleVote(id, num));

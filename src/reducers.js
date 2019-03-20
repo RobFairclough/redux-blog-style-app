@@ -63,13 +63,14 @@ const comments = (state = {}, action) => {
             };
         case SEND_COMMENT_VOTE:
             const { id, commentId, num } = action;
-            const comment = state[id][commentId];
+            const newComments = state[id].map(comment =>
+                comment._id === commentId
+                    ? { ...comment, votes: comment.votes + num }
+                    : comment
+            );
             return {
                 ...state,
-                [id]: {
-                    ...state[id],
-                    [commentId]: { ...comment, votes: comment.votes + num }
-                }
+                [id]: newComments
             };
         default:
             return state;
