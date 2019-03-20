@@ -30,6 +30,11 @@
     margin: 1em 25%;
 }
 
+.delete-button {
+    float: right;
+    align-self: flex-end;
+}
+
 .link-text {
     text-decoration: none;
     color: black;
@@ -45,5 +50,4 @@
 .vote-container {
     display: flex;
     align-items: center;
-    justify-items: space-be;
 }

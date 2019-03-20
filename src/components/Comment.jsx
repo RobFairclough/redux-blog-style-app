@@ -4,7 +4,6 @@ import Vote from "./Vote";
 const Comment = ({ comment, handleDelete }) => {
     return (
         <div className="comment container">
-            <h5>{comment.created_by}</h5>
             {comment.created_by === "northcoder" && (
                 <button
                     className="delete-button"
@@ -13,6 +12,7 @@ const Comment = ({ comment, handleDelete }) => {
                     X
                 </button>
             )}
+            <h5>{comment.created_by}</h5>
             <p>{comment.body}</p>
             <Vote votes={comment.votes} id={comment._id} type={"comments"} />
         </div>
