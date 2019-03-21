@@ -42,6 +42,7 @@ const articles = (state = { isFetching: false, items: [] }, action) => {
 };
 
 const comments = (state = {}, action) => {
+    const { id, articleId, num, commentId } = action;
     switch (action.type) {
         case REQUEST_COMMENTS:
             return {
@@ -62,17 +63,23 @@ const comments = (state = {}, action) => {
         case SEND_COMMENT:
             return {
                 ...state,
-                [action.id]: [action.comment, ...action.comments[action.id]]
+                [action.id]: {
+                    [action.comment._id]: action.comment,
+                    ...action.comments[action.id]
+                }
             };
         case REMOVE_COMMENT:
             return {
                 ...state,
-                [action.articleId]: state[action.articleId].filter(
-                    comment => comment._id !== action.commentId
+                [articleId]: Object.values(state[articleId]).reduce(
+                    (all, one) => {
+                        if (one._id !== commentId) all[one._id] = { ...one };
+                        return all;
+                    },
+                    {}
                 )
             };
         case SEND_COMMENT_VOTE:
-            const { id, commentId, num } = action;
             const comment = { ...state[id][commentId] };
             const newComments = {
                 ...state[id],
