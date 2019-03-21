@@ -7,7 +7,7 @@ import { API_URL } from "../utils";
 const Vote = ({ votes, id, type, dispatch, articleId }) => {
     const [score, setScore] = useState(votes || 0);
     const handleVote = vote => {
-        const num = vote === "up" ? 1 : -1;
+        const num = vote === "UP" ? 1 : -1;
         setScore(score + num);
         axios.put(`${API_URL}/${type}/${id}?vote=${vote}`, { vote });
         dispatch(
@@ -19,9 +19,9 @@ const Vote = ({ votes, id, type, dispatch, articleId }) => {
 
     return (
         <div className="vote-container">
-            <button onClick={() => handleVote("up")}>up</button>
+            <button onClick={() => handleVote("UP")}>UP</button>
             <p>{score}</p>
-            <button onClick={() => handleVote("down")}>down</button>
+            <button onClick={() => handleVote("DOWN")}>DOWN</button>
         </div>
     );
 };

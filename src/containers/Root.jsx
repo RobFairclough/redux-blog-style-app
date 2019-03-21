@@ -5,6 +5,7 @@ import configureStore from "../configureStore";
 import App from "../App";
 import Article from "../components/Article";
 import Header from "../components/Header";
+import Form from "../components/Form";
 
 const store = configureStore();
 
@@ -14,6 +15,7 @@ const Root = () => (
             <Header />
             <Route exact path="/" component={App} />
             <Route path="/articles/:id" component={Article} />
+            <Route path="/form" component={Form} />
         </Router>
     </Provider>
 );
