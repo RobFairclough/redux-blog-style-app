@@ -44,10 +44,20 @@ const articles = (state = { isFetching: false, items: [] }, action) => {
 const comments = (state = {}, action) => {
     switch (action.type) {
         case REQUEST_COMMENTS:
+            return {
+                ...state
+            };
         case RECEIVE_COMMENTS:
+            const comments = action.comments.reduce((all, one) => {
+                all[one._id] = { ...one };
+                return all;
+            }, {});
+            action.comments.forEach(
+                comment => (comments[comment._id] = { ...comment })
+            );
             return {
                 ...state,
-                [action.id]: action.comments
+                [action.id]: comments
             };
         case SEND_COMMENT:
             return {
@@ -63,11 +73,11 @@ const comments = (state = {}, action) => {
             };
         case SEND_COMMENT_VOTE:
             const { id, commentId, num } = action;
-            const newComments = state[id].map(comment =>
-                comment._id === commentId
-                    ? { ...comment, votes: comment.votes + num }
-                    : comment
-            );
+            const comment = { ...state[id][commentId] };
+            const newComments = {
+                ...state[id],
+                [commentId]: { ...comment, votes: comment.votes + num }
+            };
             return {
                 ...state,
                 [id]: newComments

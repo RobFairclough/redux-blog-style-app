@@ -35,7 +35,7 @@ const Article = ({ articles, dispatch, match, comments, isFetching }) => {
                     <button onClick={() => dispatch(fetchComments(id))}>
                         Refresh comments
                     </button>
-                    {articleComments.map((comment, i) => (
+                    {Object.values(articleComments).map((comment, i) => (
                         <Comment
                             comment={comment}
                             handleDelete={handleDeleteComment}
